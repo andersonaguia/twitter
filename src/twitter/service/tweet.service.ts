@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { CreateTweetDTO } from '../dto/create-tweet.dto';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { TweetEntity } from '../entities/tweet.entity';
@@ -24,6 +24,25 @@ export class TweetService {
                 const tweetToBeSaved = await this.tweetRepository.save(tweetToCreate);
                 resolve(tweetToBeSaved);
             } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
+    async findUserTweet(userId: number){
+        return new Promise(async(resolve, reject) => {
+            try{
+                const tweets = await this.tweetRepository.find({
+                    where:{
+                        user: Equal(userId)                       
+                    }
+                })
+
+                if(tweets.length > 0){
+                    resolve(tweets);
+                }
+                resolve("Nenhum tweet encontrado para esse usuário")
+            }catch(error){
                 reject(error);
             }
         })

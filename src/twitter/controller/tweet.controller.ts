@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateTweetDTO } from '../dto/create-tweet.dto';
 import { TweetService } from '../service/tweet.service';
 
@@ -15,4 +15,15 @@ export class TweetController {
             throw new BadRequestException(error)
         }
     }
+
+    @Get('/tweet/:userId')
+    async findUserTweet(@Param('userId') userId: number){
+        try{
+            const result = await this.tweetService.findUserTweet(userId);
+            return result
+        }catch(error){
+            throw new BadRequestException(error)
+        }
+    }
+
 }
