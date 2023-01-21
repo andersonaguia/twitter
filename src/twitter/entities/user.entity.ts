@@ -19,8 +19,8 @@ export class UserEntity {
     @Column()
     password: string
 
-    @Column()
-    salt: string
+    //@Column()
+    //salt: string
 
     @Column({ default: true })
     ativo: boolean;
@@ -35,8 +35,8 @@ export class UserEntity {
         this.tweets.push(tweet);
     }
 
-    async checkPassword(password: string): Promise<boolean> {
-        const hash = await bcrypt.hash(password, this.salt)
-        return hash === this.password;
-    }
+    //async checkPassword(password: string): Promise<boolean> {
+    //    const hash = await bcrypt.hash(password, this.salt)
+    //    return hash === this.password;
+    //}
 }
