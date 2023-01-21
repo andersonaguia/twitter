@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateTweetDTO } from '../dto/create-tweet.dto';
 import { TweetService } from '../service/tweet.service';
 
@@ -30,6 +30,16 @@ export class TweetController {
     async findTweets(){
         try{
             const result = await this.tweetService.findTweets();
+            return result;
+        }catch(error){
+            throw new BadRequestException(error);
+        }
+    }
+
+    @Get('/tweets')
+    async findTweetsHashtag(@Query('hashtag') hashtag: string){
+        try{
+            const result = await this.tweetService.findTweetsHashtag(hashtag);
             return result;
         }catch(error){
             throw new BadRequestException(error);

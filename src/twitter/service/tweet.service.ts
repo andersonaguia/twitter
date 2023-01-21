@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Equal, Repository } from 'typeorm';
+import { Equal, ILike, Repository } from 'typeorm';
 import { CreateTweetDTO } from '../dto/create-tweet.dto';
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { TweetEntity } from '../entities/tweet.entity';
@@ -65,5 +65,25 @@ export class TweetService {
                 reject(error);
             }
         })
+    }
+
+    async findTweetsHashtag(hashtag: string) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const tweets = await this.tweetRepository.find({
+                    where: {
+                        tweet: ILike(`%${hashtag}%`)
+                    }
+                })
+                if (tweets.length > 0) {
+                    resolve(tweets);
+                }
+                resolve("Nenhum tweet encontrado");
+
+            } catch (error) {
+                reject(error);
+            }
+        })
+
     }
 }
