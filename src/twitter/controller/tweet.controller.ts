@@ -12,7 +12,7 @@ export class TweetController {
             const result = await this.tweetService.createTweet(createTweet);
             return result;
         } catch (error) {
-            throw new BadRequestException(error)
+            throw new BadRequestException(error);
         }
     }
 
@@ -22,8 +22,20 @@ export class TweetController {
             const result = await this.tweetService.findUserTweet(userId);
             return result
         }catch(error){
-            throw new BadRequestException(error)
+            throw new BadRequestException(error);
         }
     }
+
+    @Get('/tweet')
+    async findTweets(){
+        try{
+            const result = await this.tweetService.findTweets();
+            return result;
+        }catch(error){
+            throw new BadRequestException(error);
+        }
+    }
+
+
 
 }

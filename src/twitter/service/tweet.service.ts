@@ -14,7 +14,7 @@ export class TweetService {
 
     async createTweet(tweetData: CreateTweetDTO) {
         return new Promise(async (resolve, reject) => {
-            try {           
+            try {
                 const tweetToCreate = this.tweetRepository.create();
                 const userId = new UserEntity();
                 userId.id = tweetData.user;
@@ -29,20 +29,39 @@ export class TweetService {
         })
     }
 
-    async findUserTweet(userId: number){
-        return new Promise(async(resolve, reject) => {
-            try{
+    async findUserTweet(userId: number) {
+        return new Promise(async (resolve, reject) => {
+            try {
                 const tweets = await this.tweetRepository.find({
-                    where:{
-                        user: Equal(userId)                       
+                    where: {
+                        user: Equal(userId)
                     }
                 })
 
-                if(tweets.length > 0){
+                if (tweets.length > 0) {
                     resolve(tweets);
                 }
                 resolve("Nenhum tweet encontrado para esse usuário")
-            }catch(error){
+            } catch (error) {
+                reject(error);
+            }
+        })
+    }
+
+    async findTweets() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const tweets = await this.tweetRepository.find({
+                    order: {
+                        createdDate: "DESC"
+                    },
+                    take: 20
+                })
+                if (tweets.length > 0) {
+                    resolve(tweets);
+                }
+                resolve("Nenhum tweet encontrado");
+            } catch (error) {
                 reject(error);
             }
         })
