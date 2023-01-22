@@ -1,4 +1,5 @@
-import { BadRequestException, Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/core/auth/guards/jwt-auth.guard';
 import { CreateTweetDTO } from '../dto/create-tweet.dto';
 import { TweetService } from '../service/tweet.service';
 
@@ -6,6 +7,7 @@ import { TweetService } from '../service/tweet.service';
 export class TweetController {
     constructor(private readonly tweetService: TweetService) { }
 
+    @UseGuards(JwtAuthGuard)
     @Post('/tweet')
     async createTweet(@Body() createTweet: CreateTweetDTO) {
         try {
@@ -16,6 +18,7 @@ export class TweetController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('/tweet/:userId')
     async findUserTweet(@Param('userId') userId: number){
         try{
@@ -26,6 +29,7 @@ export class TweetController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('/tweet')
     async findTweets(){
         try{
@@ -45,7 +49,4 @@ export class TweetController {
             throw new BadRequestException(error);
         }
     }
-
-
-
 }
